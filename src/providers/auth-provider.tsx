@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useEffect, useMemo, useState } from 'react';
 import { loadAccessToken } from '@/api/axios';
-import { getAccountInfo } from '@/api/resources';
+import { getCurrentUser } from '@/api/resources';
 import { app } from '@/config';
 
 const PREVIEW_FLAG = 'timecraft_shell_preview';
@@ -32,13 +32,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
 
     const token = localStorage.getItem(app.accessTokenStoreKey);
-    if (!token) {
+    const accountId = localStorage.getItem(app.accountIdStoreKey);
+    if (!token || !accountId) {
       setIsAuthenticated(false);
       setIsInitialized(true);
       return;
     }
 
-    getAccountInfo()
+    getCurrentUser()
       .then(() => setIsAuthenticated(true))
       .catch(() => setIsAuthenticated(false))
       .finally(() => setIsInitialized(true));

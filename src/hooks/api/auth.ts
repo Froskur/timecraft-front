@@ -1,4 +1,3 @@
-import { z } from 'zod';
 import { notifications } from '@mantine/notifications';
 import {
   removeClientAccessToken,
@@ -7,6 +6,7 @@ import {
   setClientAccountId,
 } from '@/api/axios';
 import { LoginRequestSchema, LoginResponseSchema } from '@/api/dtos';
+import { getErrorMessage } from '@/api/error-message';
 import { createPostMutationHook } from '@/api/helpers';
 
 export const useLogin = createPostMutationHook({
@@ -16,31 +16,31 @@ export const useLogin = createPostMutationHook({
   rMutationParams: {
     onSuccess: (data) => {
       setClientAccessToken(data.token);
-      if (data.accountId) {
-        setClientAccountId(data.accountId);
-      }
-      notifications.show({ title: 'Welcome back!', message: 'You have successfully logged in' });
+      setClientAccountId(data.accountId);
+      notifications.show({
+        title: 'Вход выполнен',
+        message: 'Сессия сохранена (токен и аккаунт)',
+      });
     },
     onError: (error) => {
-      notifications.show({ message: error.message, color: 'red' });
+      notifications.show({ message: getErrorMessage(error, 'Не удалось войти'), color: 'red' });
     },
   },
 });
 
-export const useLogout = createPostMutationHook({
-  endpoint: 'v1/auth/logout',
-  bodySchema: z.null(),
-  responseSchema: z.any(),
-  rMutationParams: {
-    onSuccess: () => {
+/** Local logout — API has no /v1/auth/logout in wave 1. */
+export function useLogout() {
+  return {
+    mutate: (
+      _args: { variables: null },
+      options?: { onSuccess?: () => void; onError?: () => void }
+    ) => {
       removeClientAccessToken();
       removeClientAccountId();
-      notifications.show({ title: 'Goodbye!', message: 'You have successfully logged out' });
+      sessionStorage.removeItem('timecraft_shell_preview');
+      notifications.show({ title: 'Выход', message: 'Сессия очищена' });
+      options?.onSuccess?.();
     },
-    onError: (error) => {
-      removeClientAccessToken();
-      removeClientAccountId();
-      notifications.show({ message: error.message, color: 'red' });
-    },
-  },
-});
+    isPending: false,
+  };
+}

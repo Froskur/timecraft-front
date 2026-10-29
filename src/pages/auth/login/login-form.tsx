@@ -1,7 +1,8 @@
 import { NavLink } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Anchor, Button, Divider, Group, Stack, StackProps } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
-import { LoginRequestSchema } from '@/api/dtos';
+import { LoginFormSchema } from '@/api/dtos';
 import { Checkbox } from '@/components/forms/checkbox';
 import { FormProvider } from '@/components/forms/form-provider';
 import { PasswordInput } from '@/components/forms/password-input';
@@ -9,11 +10,13 @@ import { TextInput } from '@/components/forms/text-input';
 import { useAuth, useLogin } from '@/hooks';
 import { paths } from '@/routes';
 import { handleFormErrors } from '@/utilities/form';
-import { useTranslation } from 'react-i18next';
 
 interface LoginFormProps extends Omit<StackProps, 'children'> {
   onSuccess?: () => void;
 }
+
+const DEMO_EMAIL = 'demo@timecraft.local';
+const DEMO_PASSWORD = 'demo-password';
 
 export function LoginForm({ onSuccess, ...props }: LoginFormProps) {
   const { setIsAuthenticated, enterPreview } = useAuth();
@@ -22,15 +25,16 @@ export function LoginForm({ onSuccess, ...props }: LoginFormProps) {
 
   const form = useForm({
     mode: 'uncontrolled',
-    validate: zodResolver(LoginRequestSchema),
-    initialValues: { email: '', password: '', remember: false },
+    validate: zodResolver(LoginFormSchema),
+    initialValues: { email: DEMO_EMAIL, password: DEMO_PASSWORD, remember: true },
   });
 
-  const handleSubmit = form.onSubmit((variables) => {
+  const handleSubmit = form.onSubmit((values) => {
     login(
-      { variables },
+      { variables: { email: values.email, password: values.password } },
       {
         onSuccess: () => {
+          sessionStorage.removeItem('timecraft_shell_preview');
           setIsAuthenticated(true);
           onSuccess?.();
         },
@@ -53,7 +57,7 @@ export function LoginForm({ onSuccess, ...props }: LoginFormProps) {
         <Button type="submit" loading={isPending}>
           {t('login.login')}
         </Button>
-        <Divider label="OR" labelPosition="center" />
+        <Divider label="ИЛИ" labelPosition="center" />
         <Button type="button" variant="light" onClick={enterPreview}>
           {t('login.preview')}
         </Button>
