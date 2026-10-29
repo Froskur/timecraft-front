@@ -1,0 +1,62 @@
+{
+  "section": {
+    "Overview": "Overview",
+    "Directories": "Directories"
+  },
+  "menu": {
+    "Home": "Home",
+    "Account": "Account",
+    "Organizations": "Organizations",
+    "Locations": "Locations",
+    "Resources": "Resources",
+    "Staff": "Staff"
+  },
+  "login": {
+    "noaccaunt": "Don't have an account?",
+    "welcome": {
+      "part1": "Welcome back! Please",
+      "part2": "Sign in",
+      "part3": "to continue."
+    },
+    "description": "Sign in to manage organizations, locations, resources and staff for your scheduling workspace.",
+    "register": "Register",
+    "login": "Login",
+    "back": "Go back",
+    "forgot": "Forgot password?",
+    "remember": "Remember me",
+    "email": "Email",
+    "password": "Password",
+    "preview": "Open shell (preview)"
+  },
+  "auth": {
+    "label": "Scheduling for modern service businesses.",
+    "slogan": "Plan. Book. Serve. Grow."
+  },
+  "home": {
+    "label1": "Welcome to",
+    "label2": "TimeCraft",
+    "about": "Manage your account context, organizations, locations, resources and staff. Scheduling and bookings come next."
+  },
+  "directories": {
+    "account": {
+      "description": "SaaS account context for the signed-in tenant.",
+      "api": "Will call GET /v1/account (and related auth/me). Stub for now."
+    },
+    "organizations": {
+      "description": "Optional organizations under the account.",
+      "api": "Will call /v1/organizations. Stub for now."
+    },
+    "locations": {
+      "description": "Optional locations / venues.",
+      "api": "Will call /v1/locations. Stub for now."
+    },
+    "resources": {
+      "description": "Primary bookable resources (chair, room, …).",
+      "api": "Will call /v1/resources. Stub for now."
+    },
+    "staff": {
+      "description": "Optional staff directory.",
+      "api": "Will call /v1/staff. Stub for now."
+    }
+  }
+}
