@@ -39,24 +39,24 @@
   },
   "directories": {
     "account": {
-      "description": "Контекст SaaS-аккаунта текущего арендатора.",
-      "api": "Будет вызывать GET /v1/account (и auth/me). Пока заглушка."
+      "description": "Текущий SaaS-аккаунт: просмотр и редактирование.",
+      "api": "GET/PATCH /v1/account"
     },
     "organizations": {
       "description": "Опциональные организации внутри аккаунта.",
-      "api": "Будет вызывать /v1/organizations. Пока заглушка."
+      "api": "CRUD /v1/organizations"
     },
     "locations": {
-      "description": "Опциональные площадки / локации.",
-      "api": "Будет вызывать /v1/locations. Пока заглушка."
+      "description": "Опциональные площадки.",
+      "api": "CRUD /v1/locations"
     },
     "resources": {
       "description": "Основные ресурсы записи (кресло, кабинет, …).",
-      "api": "Будет вызывать /v1/resources. Пока заглушка."
+      "api": "CRUD /v1/resources"
     },
     "staff": {
       "description": "Опциональный справочник сотрудников.",
-      "api": "Будет вызывать /v1/staff. Пока заглушка."
+      "api": "CRUD /v1/staff"
     }
   }
 }

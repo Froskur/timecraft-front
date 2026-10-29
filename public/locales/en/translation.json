@@ -39,24 +39,24 @@
   },
   "directories": {
     "account": {
-      "description": "SaaS account context for the signed-in tenant.",
-      "api": "Will call GET /v1/account (and related auth/me). Stub for now."
+      "description": "Current SaaS account: view and edit.",
+      "api": "GET/PATCH /v1/account"
     },
     "organizations": {
       "description": "Optional organizations under the account.",
-      "api": "Will call /v1/organizations. Stub for now."
+      "api": "CRUD /v1/organizations"
     },
     "locations": {
       "description": "Optional locations / venues.",
-      "api": "Will call /v1/locations. Stub for now."
+      "api": "CRUD /v1/locations"
     },
     "resources": {
       "description": "Primary bookable resources (chair, room, …).",
-      "api": "Will call /v1/resources. Stub for now."
+      "api": "CRUD /v1/resources"
     },
     "staff": {
       "description": "Optional staff directory.",
-      "api": "Will call /v1/staff. Stub for now."
+      "api": "CRUD /v1/staff"
     }
   }
 }

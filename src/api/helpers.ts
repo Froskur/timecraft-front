@@ -303,6 +303,68 @@ export function createPutMutationHook<
   };
 }
 
+/* --------------------------------- PATCH ---------------------------------- */
+
+interface CreatePatchMutationHookArgs<
+  BodySchema extends z.ZodType,
+  ResponseSchema extends z.ZodType,
+> {
+  endpoint: string;
+  bodySchema: BodySchema;
+  responseSchema: ResponseSchema;
+  rMutationParams?: EnhancedMutationParams<z.infer<ResponseSchema>, Error, z.infer<BodySchema>>;
+  options?: { isMultipart?: boolean };
+}
+
+export function createPatchMutationHook<
+  BodySchema extends z.ZodType,
+  ResponseSchema extends z.ZodType,
+  RouteParams extends Record<string, string | number | undefined> = {},
+  QueryParams extends Record<string, string | number | undefined> = {},
+>({
+  endpoint,
+  bodySchema,
+  responseSchema,
+  rMutationParams,
+  options,
+}: CreatePatchMutationHookArgs<BodySchema, ResponseSchema>) {
+  return (params?: { query?: QueryParams; route?: RouteParams }) => {
+    const queryClient = useQueryClient();
+    const baseUrl = createUrl(endpoint, params?.query, params?.route);
+    const mutationFn = async ({
+      variables,
+      route,
+      query,
+    }: {
+      variables: z.infer<BodySchema>;
+      query?: QueryParams;
+      route?: RouteParams;
+    }) => {
+      const url = createUrl(baseUrl, query, route);
+
+      const config = options?.isMultipart
+        ? { headers: { 'Content-Type': 'multipart/form-data' } }
+        : undefined;
+
+      return client
+        .patch(url, bodySchema.parse(variables), config)
+        .then((response) => responseSchema.parse(response.data))
+        .catch(handleRequestError);
+    };
+
+    return useMutation({
+      ...rMutationParams,
+      mutationFn,
+      onSuccess: (data, variables, context) =>
+        rMutationParams?.onSuccess?.(data, variables, context, queryClient),
+      onError: (error, variables, context) =>
+        rMutationParams?.onError?.(error, variables, context, queryClient),
+      onSettled: (data, error, variables, context) =>
+        rMutationParams?.onSettled?.(data, error, variables, context, queryClient),
+    });
+  };
+}
+
 /* --------------------------------- DELETE --------------------------------- */
 
 interface CreateDeleteMutationHookArgs<
@@ -326,14 +388,24 @@ interface CreateDeleteMutationHookArgs<
  *  rMutationParams: { onSuccess: () => queryClient.invalidateQueries('getUsers') },
  * });
  */
+type DeleteVariables<TModel, RouteParams, QueryParams> = {
+  model: TModel;
+  route?: RouteParams;
+  query?: QueryParams;
+};
+
 export function createDeleteMutationHook<
-  ModelSchema extends z.ZodType,
+  TModel = unknown,
   RouteParams extends Record<string, string | number | undefined> = {},
   QueryParams extends Record<string, string | number | undefined> = {},
 >({
   endpoint,
   rMutationParams,
-}: CreateDeleteMutationHookArgs<z.infer<ModelSchema>, Error, z.infer<ModelSchema>>) {
+}: CreateDeleteMutationHookArgs<
+  TModel,
+  Error,
+  DeleteVariables<TModel, RouteParams, QueryParams>
+>) {
   return (params?: { query?: QueryParams; route?: RouteParams }) => {
     const queryClient = useQueryClient();
     const baseUrl = createUrl(endpoint, params?.query, params?.route);
@@ -342,27 +414,30 @@ export function createDeleteMutationHook<
       model,
       route,
       query,
-    }: {
-      model: z.infer<ModelSchema>;
-      query?: QueryParams;
-      route?: RouteParams;
-    }) => {
+    }: DeleteVariables<TModel, RouteParams, QueryParams>): Promise<TModel> => {
       const url = createUrl(baseUrl, query, route);
-      return client
-        .delete(url)
-        .then(() => model)
-        .catch(handleRequestError);
+      try {
+        // Fastify rejects empty body when Content-Type is application/json —
+        // send `{}` so default axios JSON headers stay valid.
+        await client.delete(url, { data: {} });
+        return model;
+      } catch (error) {
+        handleRequestError(error);
+        return model;
+      }
     };
 
+    const { onSuccess, onError, onSettled, ...rest } = rMutationParams ?? {};
+
     return useMutation({
-      ...rMutationParams,
+      ...rest,
       mutationFn,
-      onSuccess: (data, variables, context) =>
-        rMutationParams?.onSuccess?.(data, variables, context, queryClient),
+      onSuccess: (data: TModel, variables, context) =>
+        onSuccess?.(data, variables, context, queryClient),
       onError: (error, variables, context) =>
-        rMutationParams?.onError?.(error, variables, context, queryClient),
-      onSettled: (data, error, variables, context) =>
-        rMutationParams?.onSettled?.(data, error, variables, context, queryClient),
+        onError?.(error, variables, context, queryClient),
+      onSettled: (data: TModel | undefined, error, variables, context) =>
+        onSettled?.(data, error, variables, context, queryClient),
     });
   };
 }
