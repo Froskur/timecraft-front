@@ -64,20 +64,12 @@ const router = createBrowserRouter([
         element: LazyPage(() => import('@/pages/dashboard/account')),
       },
       {
-        path: paths.dashboard.organizations,
-        element: LazyPage(() => import('@/pages/dashboard/organizations')),
-      },
-      {
-        path: paths.dashboard.locations,
-        element: LazyPage(() => import('@/pages/dashboard/locations')),
-      },
-      {
         path: paths.dashboard.resources,
         element: LazyPage(() => import('@/pages/dashboard/resources')),
       },
       {
-        path: paths.dashboard.staff,
-        element: LazyPage(() => import('@/pages/dashboard/staff')),
+        path: paths.dashboard.dimensions,
+        element: LazyPage(() => import('@/pages/dashboard/dimensions')),
       },
     ],
   },

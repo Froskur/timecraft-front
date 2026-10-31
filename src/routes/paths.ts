@@ -13,9 +13,7 @@ export const paths = {
     root: '/dashboard',
     home: '/dashboard/home',
     account: '/dashboard/account',
-    organizations: '/dashboard/organizations',
-    locations: '/dashboard/locations',
     resources: '/dashboard/resources',
-    staff: '/dashboard/staff',
+    dimensions: '/dashboard/dimensions',
   },
 };

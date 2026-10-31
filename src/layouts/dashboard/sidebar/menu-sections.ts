@@ -1,11 +1,9 @@
 import { ElementType } from 'react';
 import {
-  PiBuildingsDuotone,
-  PiMapPinDuotone,
   PiSquaresFourDuotone,
   PiStarDuotone,
+  PiTreeStructureDuotone,
   PiUserCircleDuotone,
-  PiUsersThreeDuotone,
 } from 'react-icons/pi';
 import { paths } from '@/routes/paths';
 
@@ -43,24 +41,14 @@ export const menu: MenuItem[] = [
     header: 'Directories',
     section: [
       {
-        name: 'Organizations',
-        href: paths.dashboard.organizations,
-        icon: PiBuildingsDuotone,
-      },
-      {
-        name: 'Locations',
-        href: paths.dashboard.locations,
-        icon: PiMapPinDuotone,
-      },
-      {
         name: 'Resources',
         href: paths.dashboard.resources,
         icon: PiSquaresFourDuotone,
       },
       {
-        name: 'Staff',
-        href: paths.dashboard.staff,
-        icon: PiUsersThreeDuotone,
+        name: 'Dimensions',
+        href: paths.dashboard.dimensions,
+        icon: PiTreeStructureDuotone,
       },
     ],
   },

@@ -1,6 +1,11 @@
 export const app = {
   name: 'TimeCraft',
-  apiBaseUrl: import.meta.env.VITE_API_BASE_URL || 'https://back.timecraft.meditum.eu',
+  // Empty string = same-origin (scripts/serve.mjs proxies /v1 to the backend).
+  // Set VITE_API_BASE_URL at build time to call the API host directly.
+  apiBaseUrl:
+    import.meta.env.VITE_API_BASE_URL !== undefined
+      ? import.meta.env.VITE_API_BASE_URL
+      : 'https://back.timecraft.meditum.eu',
   fakeBackend: false,
   redirectQueryParamName: 'r',
   accessTokenStoreKey: 'timecraft_access_token',

@@ -10,7 +10,7 @@ import { getErrorMessage } from '@/api/error-message';
 import { createPostMutationHook } from '@/api/helpers';
 
 export const useLogin = createPostMutationHook({
-  endpoint: 'v1/auth/login',
+  endpoint: '/v1/auth/login',
   bodySchema: LoginRequestSchema,
   responseSchema: LoginResponseSchema,
   rMutationParams: {

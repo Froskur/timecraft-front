@@ -6,10 +6,8 @@
   "menu": {
     "Home": "Home",
     "Account": "Account",
-    "Organizations": "Organizations",
-    "Locations": "Locations",
     "Resources": "Resources",
-    "Staff": "Staff"
+    "Dimensions": "Dimensions"
   },
   "login": {
     "noaccaunt": "Don't have an account?",
@@ -18,7 +16,7 @@
       "part2": "Sign in",
       "part3": "to continue."
     },
-    "description": "Sign in to manage organizations, locations, resources and staff for your scheduling workspace.",
+    "description": "Sign in to manage resources and dimensions for your scheduling workspace.",
     "register": "Register",
     "login": "Login",
     "back": "Go back",
@@ -35,28 +33,20 @@
   "home": {
     "label1": "Welcome to",
     "label2": "TimeCraft",
-    "about": "Manage your account context, organizations, locations, resources and staff. Scheduling and bookings come next."
+    "about": "Manage your account, resources and dimensions. Scheduling and bookings come next."
   },
   "directories": {
     "account": {
-      "description": "Current SaaS account: view and edit.",
-      "api": "GET/PATCH /v1/account"
-    },
-    "organizations": {
-      "description": "Optional organizations under the account.",
-      "api": "CRUD /v1/organizations"
-    },
-    "locations": {
-      "description": "Optional locations / venues.",
-      "api": "CRUD /v1/locations"
+      "description": "SaaS account context for the signed-in tenant.",
+      "api": "GET / PATCH /v1/account"
     },
     "resources": {
-      "description": "Primary bookable resources (chair, room, …).",
-      "api": "CRUD /v1/resources"
+      "description": "Primary directory objects (person, room, equipment).",
+      "api": "/v1/resources + dimension value links"
     },
-    "staff": {
-      "description": "Optional staff directory.",
-      "api": "CRUD /v1/staff"
+    "dimensions": {
+      "description": "Optional axes and their values (organization, location, role…).",
+      "api": "/v1/dimensions and /v1/dimensions/{id}/values"
     }
   }
 }
