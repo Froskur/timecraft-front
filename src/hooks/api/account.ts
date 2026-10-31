@@ -4,7 +4,7 @@ import { getErrorMessage } from '@/api/error-message';
 import { createGetQueryHook, createPatchMutationHook } from '@/api/helpers';
 
 export const useGetCurrentUser = createGetQueryHook({
-  endpoint: 'v1/auth/me',
+  endpoint: '/v1/auth/me',
   responseSchema: User,
   rQueryParams: {
     queryKey: ['auth-me'],
@@ -13,7 +13,7 @@ export const useGetCurrentUser = createGetQueryHook({
 });
 
 export const useGetAccountInfo = createGetQueryHook({
-  endpoint: 'v1/account',
+  endpoint: '/v1/account',
   responseSchema: Account,
   rQueryParams: {
     queryKey: ['account'],
@@ -22,7 +22,7 @@ export const useGetAccountInfo = createGetQueryHook({
 });
 
 export const useUpdateAccount = createPatchMutationHook({
-  endpoint: 'v1/account',
+  endpoint: '/v1/account',
   bodySchema: AccountUpdate,
   responseSchema: Account,
   rMutationParams: {

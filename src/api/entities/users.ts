@@ -8,7 +8,6 @@ export const User = z.object({
   displayName: z.string().nullable().optional(),
   accountId: z.string().uuid(),
   role: UserRole,
-  locationIds: z.array(z.string().uuid()).optional(),
 });
 
 export type User = z.infer<typeof User>;

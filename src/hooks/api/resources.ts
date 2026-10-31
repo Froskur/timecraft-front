@@ -1,14 +1,22 @@
 import { notifications } from '@mantine/notifications';
-import { Resource, ResourceCreate, ResourceList, ResourceUpdate } from '@/api/entities';
+import {
+  Resource,
+  ResourceCreate,
+  ResourceDimensionValues,
+  ResourceList,
+  ResourceUpdate,
+} from '@/api/entities';
 import { getErrorMessage } from '@/api/error-message';
 import {
   createDeleteMutationHook,
   createGetQueryHook,
   createPatchMutationHook,
   createPostMutationHook,
+  createPutMutationHook,
 } from '@/api/helpers';
+
 export const useListResources = createGetQueryHook({
-  endpoint: 'v1/resources',
+  endpoint: '/v1/resources',
   responseSchema: ResourceList,
   rQueryParams: {
     queryKey: ['resources'],
@@ -16,7 +24,7 @@ export const useListResources = createGetQueryHook({
 });
 
 export const useCreateResource = createPostMutationHook({
-  endpoint: 'v1/resources',
+  endpoint: '/v1/resources',
   bodySchema: ResourceCreate,
   responseSchema: Resource,
   rMutationParams: {
@@ -29,7 +37,7 @@ export const useCreateResource = createPostMutationHook({
 });
 
 export const useUpdateResource = createPatchMutationHook({
-  endpoint: 'v1/resources/:resourceId',
+  endpoint: '/v1/resources/:resourceId',
   bodySchema: ResourceUpdate,
   responseSchema: Resource,
   rMutationParams: {
@@ -41,8 +49,20 @@ export const useUpdateResource = createPatchMutationHook({
   },
 });
 
+export const useSetResourceDimensionValues = createPutMutationHook({
+  endpoint: '/v1/resources/:resourceId/dimension-values',
+  bodySchema: ResourceDimensionValues,
+  responseSchema: Resource,
+  rMutationParams: {
+    onSuccess: (_d, _v, _c, qc) => {
+      qc.invalidateQueries({ queryKey: ['resources'] });
+    },
+    onError: (error) => notifications.show({ message: getErrorMessage(error), color: 'red' }),
+  },
+});
+
 export const useDeleteResource = createDeleteMutationHook({
-  endpoint: 'v1/resources/:resourceId',
+  endpoint: '/v1/resources/:resourceId',
   rMutationParams: {
     onSuccess: (_d, _v, _c, qc) => {
       qc.invalidateQueries({ queryKey: ['resources'] });
