@@ -28,9 +28,16 @@ npm run serve     # tiny node static server on :3100
 
 Nginx can also serve `dist/` directly; proxy `https://timecraft.meditum.eu` → `127.0.0.1:3100` or static root.
 
+## Demo login
+
+Form is prefilled and submits to `POST /v1/auth/login` as:
+
+- Login (`email` field): `demo`
+- Password: `demo`
+
 ## First UI slice
 
 - Auth shell (split login + language switcher)
 - Dashboard shell (sidebar + header)
-- Stub directory pages: Account, Organizations, Locations, Resources, Staff
-- Login → real API `POST /v1/auth/login`; “Open shell (preview)” for browsing stubs without backend auth
+- Directory pages aligned with Resource + Dimensions API
+- Login → real API `POST /v1/auth/login`; “Open shell (preview)” for browsing without backend auth

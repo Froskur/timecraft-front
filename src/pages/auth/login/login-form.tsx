@@ -15,8 +15,9 @@ interface LoginFormProps extends Omit<StackProps, 'children'> {
   onSuccess?: () => void;
 }
 
-const DEMO_EMAIL = 'demo@timecraft.local';
-const DEMO_PASSWORD = 'demo-password';
+/** Demo login — API field remains `email`; value is the short demo id. */
+const DEMO_LOGIN = 'demo';
+const DEMO_PASSWORD = 'demo';
 
 export function LoginForm({ onSuccess, ...props }: LoginFormProps) {
   const { setIsAuthenticated, enterPreview } = useAuth();
@@ -26,7 +27,7 @@ export function LoginForm({ onSuccess, ...props }: LoginFormProps) {
   const form = useForm({
     mode: 'uncontrolled',
     validate: zodResolver(LoginFormSchema),
-    initialValues: { email: DEMO_EMAIL, password: DEMO_PASSWORD, remember: true },
+    initialValues: { email: DEMO_LOGIN, password: DEMO_PASSWORD, remember: true },
   });
 
   const handleSubmit = form.onSubmit((values) => {

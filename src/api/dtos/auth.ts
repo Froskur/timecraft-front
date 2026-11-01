@@ -1,13 +1,14 @@
 import { z } from 'zod';
 
 export const LoginFormSchema = z.object({
-  email: z.string().email(),
+  // Demo login is `demo` / `demo` (not an email address).
+  email: z.string().min(1),
   password: z.string().min(1),
   remember: z.boolean().optional(),
 });
 
 export const LoginRequestSchema = z.object({
-  email: z.string().email(),
+  email: z.string().min(1),
   password: z.string().min(1),
   accountId: z.string().uuid().optional(),
 });
